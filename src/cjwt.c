@@ -55,6 +55,7 @@
 
 #define IS_RSA_ALG(alg) ((alg) > alg_ps512)
 
+#define Cjwt_info printf
 
 /*----------------------------------------------------------------------------*/
 /*                               Data Structures                              */
@@ -568,13 +569,13 @@ static int cjwt_update_header( cjwt_t *p_cjwt, char *p_dechead )
         return ENOMEM;
     }
 
-    cjwt_info( "Json  = %s\n", cJSON_Print( j_header ) );
-    cjwt_info( "--------------------------------------------- \n\n" );
+    Cjwt_info( "Json  = %s\n", cJSON_Print( j_header ) );
+    Cjwt_info( "--------------------------------------------- \n\n" );
     //extract data
     cJSON* j_typ = cJSON_GetObjectItem( j_header, "typ" );
 
     if( !j_typ || strcmp( j_typ->valuestring, "JWT" ) ) {
-        cjwt_info( "may not be a JWT token\n" );
+        Cjwt_info( "may not be a JWT token\n" );
     }
 
     cJSON* j_alg = cJSON_GetObjectItem( j_header, "alg" );
@@ -582,6 +583,7 @@ static int cjwt_update_header( cjwt_t *p_cjwt, char *p_dechead )
     if( j_alg ) {
         p_cjwt->header.alg = __cjwt_alg_str_to_enum( j_alg->valuestring );
     }
+    Cjwt_info ("Algorithm is %d\n", p_cjwt->header.alg);
 
     //destroy cJSON object
     cJSON_Delete( j_header );
