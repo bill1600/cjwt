@@ -822,6 +822,10 @@ int cjwt_destroy( cjwt_t **jwt )
         return 0;
     }
 
+    if (del->header.key) {
+        free (del->header.key);
+    }
+
     if( del->iss ) {
         free( del->iss );
     }
